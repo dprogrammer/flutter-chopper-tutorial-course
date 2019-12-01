@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:chopper/chopper.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:built_collection/built_collection.dart';
 
@@ -14,22 +15,43 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chopper Blog'),
+        title: Text('Chopper Wordpress'),
       ),
       body: _buildBody(context),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
-          final newPost = BuiltPost((b) => b
-            ..title = 'New Title'
-            ..body = 'New body');
+
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AlertDialog(
+                title: new Text("visite dprogrammer.net"),
+                content: new Text("Código original https://github.com/ResoCoder/flutter-chopper-tutorial-course"),
+                actions: <Widget>[
+                  // usually buttons at the bottom of the dialog
+                  new FlatButton(
+                    child: new Text("Close"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+
+          /*final newPost = BuiltPost((b) => b
+            ..title.rendered = 'New Title'
+            ..content.rendered = 'New body');
 
           // The JSONPlaceholder API always responds with whatever was passed in the POST request
           final response =
               await Provider.of<PostApiService>(context).postPost(newPost);
           // We cannot really add any new posts using the placeholder API,
           // so just print the response to the console
-          print(response.body);
+          print(response.body);*/
         },
       ),
     );
@@ -74,11 +96,24 @@ class HomePage extends StatelessWidget {
         return Card(
           elevation: 4,
           child: ListTile(
+            leading: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: 44,
+                minHeight: 44,
+                maxWidth: 64,
+                maxHeight: 64,
+              ),
+              child: Image.network(posts[index].featuredImageUrl,
+                  fit: BoxFit.cover),
+            ),
             title: Text(
-              posts[index].title,
+              posts[index].title.rendered,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(posts[index].body),
+            subtitle: Html(
+              defaultTextStyle: TextStyle(fontSize: 15.0),
+              data: posts[index].excerpt.rendered,
+            ),
             onTap: () => _navigateToPost(context, posts[index].id),
           ),
         );

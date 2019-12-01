@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
 import 'data/post_api_service.dart';
@@ -19,7 +20,7 @@ class SinglePostPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chopper Blog'),
+        title: Text('Chopper Wordpress'),
       ),
       body: FutureBuilder<Response<BuiltPost>>(
         future: Provider.of<PostApiService>(context).getPost(postId),
@@ -40,18 +41,25 @@ class SinglePostPage extends StatelessWidget {
   Padding _buildPost(BuiltPost post) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: <Widget>[
-          Text(
-            post.title,
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Image.network(post.featuredImageUrl, fit: BoxFit.cover),
+            SizedBox(height: 8),
+            Text(
+              post.title.rendered,
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          SizedBox(height: 8),
-          Text(post.body),
-        ],
+            SizedBox(height: 8),
+            Html(
+              defaultTextStyle: TextStyle(fontSize: 18.0),
+              data: post.content.rendered,
+            ),
+          ],
+        ),
       ),
     );
   }

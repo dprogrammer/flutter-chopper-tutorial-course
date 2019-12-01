@@ -18,11 +18,17 @@ class _$BuiltPostSerializer implements StructuredSerializer<BuiltPost> {
   Iterable<Object> serialize(Serializers serializers, BuiltPost object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'title',
-      serializers.serialize(object.title,
+      'featured_image_url',
+      serializers.serialize(object.featuredImageUrl,
           specifiedType: const FullType(String)),
-      'body',
-      serializers.serialize(object.body, specifiedType: const FullType(String)),
+      'title',
+      serializers.serialize(object.title, specifiedType: const FullType(Title)),
+      'content',
+      serializers.serialize(object.content,
+          specifiedType: const FullType(Content)),
+      'excerpt',
+      serializers.serialize(object.excerpt,
+          specifiedType: const FullType(Excerpt)),
     ];
     if (object.id != null) {
       result
@@ -48,13 +54,21 @@ class _$BuiltPostSerializer implements StructuredSerializer<BuiltPost> {
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
-        case 'title':
-          result.title = serializers.deserialize(value,
+        case 'featured_image_url':
+          result.featuredImageUrl = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'body':
-          result.body = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'title':
+          result.title.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Title)) as Title);
+          break;
+        case 'content':
+          result.content.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Content)) as Content);
+          break;
+        case 'excerpt':
+          result.excerpt.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Excerpt)) as Excerpt);
           break;
       }
     }
@@ -67,19 +81,31 @@ class _$BuiltPost extends BuiltPost {
   @override
   final int id;
   @override
-  final String title;
+  final String featuredImageUrl;
   @override
-  final String body;
+  final Title title;
+  @override
+  final Content content;
+  @override
+  final Excerpt excerpt;
 
   factory _$BuiltPost([void Function(BuiltPostBuilder) updates]) =>
       (new BuiltPostBuilder()..update(updates)).build();
 
-  _$BuiltPost._({this.id, this.title, this.body}) : super._() {
+  _$BuiltPost._(
+      {this.id, this.featuredImageUrl, this.title, this.content, this.excerpt})
+      : super._() {
+    if (featuredImageUrl == null) {
+      throw new BuiltValueNullFieldError('BuiltPost', 'featuredImageUrl');
+    }
     if (title == null) {
       throw new BuiltValueNullFieldError('BuiltPost', 'title');
     }
-    if (body == null) {
-      throw new BuiltValueNullFieldError('BuiltPost', 'body');
+    if (content == null) {
+      throw new BuiltValueNullFieldError('BuiltPost', 'content');
+    }
+    if (excerpt == null) {
+      throw new BuiltValueNullFieldError('BuiltPost', 'excerpt');
     }
   }
 
@@ -95,21 +121,30 @@ class _$BuiltPost extends BuiltPost {
     if (identical(other, this)) return true;
     return other is BuiltPost &&
         id == other.id &&
+        featuredImageUrl == other.featuredImageUrl &&
         title == other.title &&
-        body == other.body;
+        content == other.content &&
+        excerpt == other.excerpt;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, id.hashCode), title.hashCode), body.hashCode));
+    return $jf($jc(
+        $jc(
+            $jc($jc($jc(0, id.hashCode), featuredImageUrl.hashCode),
+                title.hashCode),
+            content.hashCode),
+        excerpt.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('BuiltPost')
           ..add('id', id)
+          ..add('featuredImageUrl', featuredImageUrl)
           ..add('title', title)
-          ..add('body', body))
+          ..add('content', content)
+          ..add('excerpt', excerpt))
         .toString();
   }
 }
@@ -121,21 +156,32 @@ class BuiltPostBuilder implements Builder<BuiltPost, BuiltPostBuilder> {
   int get id => _$this._id;
   set id(int id) => _$this._id = id;
 
-  String _title;
-  String get title => _$this._title;
-  set title(String title) => _$this._title = title;
+  String _featuredImageUrl;
+  String get featuredImageUrl => _$this._featuredImageUrl;
+  set featuredImageUrl(String featuredImageUrl) =>
+      _$this._featuredImageUrl = featuredImageUrl;
 
-  String _body;
-  String get body => _$this._body;
-  set body(String body) => _$this._body = body;
+  TitleBuilder _title;
+  TitleBuilder get title => _$this._title ??= new TitleBuilder();
+  set title(TitleBuilder title) => _$this._title = title;
+
+  ContentBuilder _content;
+  ContentBuilder get content => _$this._content ??= new ContentBuilder();
+  set content(ContentBuilder content) => _$this._content = content;
+
+  ExcerptBuilder _excerpt;
+  ExcerptBuilder get excerpt => _$this._excerpt ??= new ExcerptBuilder();
+  set excerpt(ExcerptBuilder excerpt) => _$this._excerpt = excerpt;
 
   BuiltPostBuilder();
 
   BuiltPostBuilder get _$this {
     if (_$v != null) {
       _id = _$v.id;
-      _title = _$v.title;
-      _body = _$v.body;
+      _featuredImageUrl = _$v.featuredImageUrl;
+      _title = _$v.title?.toBuilder();
+      _content = _$v.content?.toBuilder();
+      _excerpt = _$v.excerpt?.toBuilder();
       _$v = null;
     }
     return this;
@@ -156,7 +202,30 @@ class BuiltPostBuilder implements Builder<BuiltPost, BuiltPostBuilder> {
 
   @override
   _$BuiltPost build() {
-    final _$result = _$v ?? new _$BuiltPost._(id: id, title: title, body: body);
+    _$BuiltPost _$result;
+    try {
+      _$result = _$v ??
+          new _$BuiltPost._(
+              id: id,
+              featuredImageUrl: featuredImageUrl,
+              title: title.build(),
+              content: content.build(),
+              excerpt: excerpt.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'title';
+        title.build();
+        _$failedField = 'content';
+        content.build();
+        _$failedField = 'excerpt';
+        excerpt.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'BuiltPost', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

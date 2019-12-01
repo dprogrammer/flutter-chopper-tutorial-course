@@ -22,7 +22,7 @@ abstract class PostApiService extends ChopperService {
 
   static PostApiService create() {
     final client = ChopperClient(
-      baseUrl: 'https://jsonplaceholder.typicode.com',
+      baseUrl: 'https://baruksoft.com/wp-json/wp/v2',
       services: [
         _$PostApiService(),
       ],
