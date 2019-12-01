@@ -1,16 +1,25 @@
-# chopper_tutorial
+# Chopper Wordpress
 
-A new Flutter project.
+Modified to Consume a WordPress REST API: [https://baruksoft.com/wp-json/wp/v2/posts?_embed=1](https://baruksoft.com/wp-json/wp/v2/posts?_embed=1).
 
-## Getting Started
+## Copied Content
 
-This project is a starting point for a Flutter application.
+Chopper (Retrofit for Flutter) - #1 Basics - Dart HTTP Client Generator Tutorial
+[https://www.youtube.com/watch?v=zFXK5EsrUF0&t=2s](https://www.youtube.com/watch?v=zFXK5EsrUF0&t=2s)
 
-A few resources to get you started if this is your first Flutter project:
+Chopper (Retrofit for Flutter) - #2 Interceptors - Dart HTTP Client Generator Tutorial
+[https://www.youtube.com/watch?v=ViqtHHLfN94](https://www.youtube.com/watch?v=ViqtHHLfN94)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Chopper (Retrofit for Flutter) #3 – Converters & Built Value Integration - Dart HTTP Client Tutorial
+[https://www.youtube.com/watch?v=fynWAe9GjmE](https://www.youtube.com/watch?v=fynWAe9GjmE).
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## Considerations
+
+- Installed package [flutter_html_view](https://pub.dev/packages/flutter_html_view) to display post content
+- Pagination option will soon be implemented. At the moment I just changed the consumed api
+- To create complex properties: [https://charafau.github.io/json2builtvalue](https://charafau.github.io/json2builtvalue). The Json to Dart built_value class converter creates classes for you that correspond to a snippet of JSON
+
+## My personal blog
+
+[https://dprogrammer.net](https://dprogrammer.net/)
+
